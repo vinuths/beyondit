@@ -13,7 +13,7 @@ import {
   FaWhatsapp,
 } from "react-icons/fa";
 
-// Global styles (CSS variables and keyframes)
+// Global styles and animations
 const globalStyles = `
   :root {
     --bg-color: #f7f8ff;
@@ -24,6 +24,7 @@ const globalStyles = `
     --quote-icon: #c4b9ff;
     --star-color: #f6c90e;
   }
+
   body.dark {
     --bg-color: #0e0e2e;
     --text-color: #eaeaff;
@@ -33,19 +34,57 @@ const globalStyles = `
     --quote-icon: #8b7cff;
     --star-color: #ffd700;
   }
+
   @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;700;800&display=swap');
+
   @keyframes fadeSlideIn {
     from { opacity: 0; transform: translateY(20px); }
     to { opacity: 1; transform: translateY(0); }
   }
+
   @keyframes pulseGlow {
     0% { background-position: 0% 50%; }
     50% { background-position: 100% 50%; }
     100% { background-position: 0% 50%; }
   }
+
   @keyframes bounce {
     0%,100% { transform: translateY(0); }
     50% { transform: translateY(-10%); }
+  }
+
+  @keyframes scrollText {
+    from { transform: translateX(100%); }
+    to { transform: translateX(-100%); }
+  }
+
+  @keyframes sparkle {
+    0%, 100% { opacity: 0; transform: scale(0.8) rotate(0deg); }
+    50% { opacity: 1; transform: scale(1.2) rotate(20deg); }
+  }
+
+  @keyframes floatStars {
+    0% {
+      transform: translateY(0) translateX(0) scale(1);
+      opacity: 1;
+    }
+    100% {
+      transform: translateY(-200px) translateX(20px) scale(1.2);
+      opacity: 0;
+    }
+  }
+
+  .floating-star {
+    position: fixed;
+    color: var(--star-color);
+    font-size: 16px;
+    opacity: 0.8;
+    animation-name: floatStars;
+    animation-timing-function: ease-in-out;
+    animation-iteration-count: infinite;
+    pointer-events: none;
+    user-select: none;
+    z-index: 9999;
   }
 `;
 
@@ -55,6 +94,8 @@ const pageBackgroundStyle = {
   paddingTop: "2rem",
   paddingBottom: "2rem",
   fontFamily: "'Poppins', sans-serif",
+  backgroundAttachment: "fixed",
+  backgroundImage: "linear-gradient(to bottom, var(--bg-color), #eaeaff)",
 };
 
 const sectionCenterStyle = {
@@ -123,7 +164,20 @@ const whatsappButtonStyle = {
   cursor: "pointer",
   zIndex: 1000,
   animation: "bounce 2.5s infinite",
-  transition: "box-shadow 0.3s ease, transform 0.3s ease",
+};
+
+const scrollTopButtonStyle = {
+  position: "fixed",
+  bottom: 160,
+  right: 24,
+  background: "var(--primary-color)",
+  color: "#fff",
+  padding: "12px 14px",
+  borderRadius: "50%",
+  cursor: "pointer",
+  fontSize: "18px",
+  zIndex: 1000,
+  boxShadow: "0 6px 12px rgba(0,0,0,0.2)",
 };
 
 const pulseGlowStyle = {
@@ -142,9 +196,13 @@ const pulseGlowStyle = {
   zIndex: -1,
 };
 
-const fadeSlideInStyle = {
-  animation: "fadeSlideIn 0.8s ease forwards",
-  opacity: 0,
+const FloatingStar = ({ style, delay, duration }) => {
+  const starStyle = {
+    ...style,
+    animationDelay: delay,
+    animationDuration: duration,
+  };
+  return <FaStar className="floating-star" style={starStyle} />;
 };
 
 const Home = () => {
@@ -173,11 +231,13 @@ const Home = () => {
   useEffect(() => {
     const handleResize = () => setIsWide(window.innerWidth >= 768);
     window.addEventListener("resize", handleResize);
+
     const interval = setInterval(() => {
       setCurrentTestimonial((prev) =>
         prev === testimonials.length - 1 ? 0 : prev + 1
       );
     }, 7000);
+
     return () => {
       window.removeEventListener("resize", handleResize);
       clearInterval(interval);
@@ -188,17 +248,28 @@ const Home = () => {
     document.body.classList.toggle("dark", darkMode);
   }, [darkMode]);
 
-  const grid = isWide ? responsiveGridStyle : gridStyle;
-
   const handleWhatsAppClick = () => {
-    const phoneNumber = "919743880882"; // Updated phone number with country code
-    const message =
-      "Hello! I visited your website and would like to know more.";
-    const url = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(
-      message
-    )}`;
+    const phoneNumber = "919743880882";
+    const message = "Hello! I visited your website and would like to know more.";
+    const url = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
     window.open(url, "_blank");
   };
+
+  const handleScrollTop = () => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
+
+  const grid = isWide ? responsiveGridStyle : gridStyle;
+
+  // Generate random stars data for floating stars
+  const stars = Array.from({ length: 25 }).map(() => ({
+    top: Math.random() * window.innerHeight,
+    left: Math.random() * window.innerWidth,
+    delay: `${Math.random() * 10}s`,
+    duration: `${5 + Math.random() * 5}s`,
+    size: 12 + Math.random() * 12,
+    opacity: 0.5 + Math.random() * 0.5,
+  }));
 
   return (
     <>
@@ -232,17 +303,76 @@ const Home = () => {
         {darkMode ? "☀ Light Mode" : "🌙 Dark Mode"}
       </button>
 
+      {/* Floating stars container */}
+      {stars.map((star, i) => (
+        <FloatingStar
+          key={i}
+          style={{
+            top: star.top,
+            left: star.left,
+            fontSize: star.size,
+            opacity: star.opacity,
+            animationDelay: star.delay,
+            animationDuration: star.duration,
+          }}
+          delay={star.delay}
+          duration={star.duration}
+        />
+      ))}
+
       <div style={pageBackgroundStyle}>
-        {/* Welcome */}
+        {/* Hero Section */}
         <section style={sectionCenterStyle}>
-          <h1 style={heading1Style}>Welcome to BeyondIT</h1>
+          <h1 style={heading1Style}>
+            <span style={{ position: "relative", display: "inline-block" }}>
+              Welcome to BeyondIT
+              <span
+                style={{
+                  position: "absolute",
+                  top: "-10px",
+                  right: "-20px",
+                  fontSize: "1.5rem",
+                  animation: "sparkle 1.5s infinite ease-in-out",
+                }}
+              >
+                ✨
+              </span>
+            </span>
+          </h1>
           <p style={paragraphStyle}>
             We provide cutting-edge technology services to help your business
             grow.
           </p>
         </section>
 
-        {/* Services */}
+        {/* Scrolling Ribbon */}
+        <section
+          style={{
+            background:
+              "linear-gradient(to right, var(--primary-color), var(--secondary-color))",
+            color: "#fff",
+            padding: "0.75rem 0",
+            fontWeight: "600",
+            fontSize: "1rem",
+            letterSpacing: "1px",
+            overflow: "hidden",
+            position: "relative",
+            marginBottom: "2rem",
+          }}
+        >
+          <div
+            style={{
+              display: "inline-block",
+              whiteSpace: "nowrap",
+              animation: "scrollText 20s linear infinite",
+            }}
+          >
+            🚀 We build modern websites | 🎨 UI/UX & Logo Designs | 🤖 AI Voice
+            Over Videos | 📈 Boost your online presence with BeyondIT!
+          </div>
+        </section>
+
+        {/* Services Section */}
         <section style={{ ...sectionCenterStyle, ...contentCardStyle }}>
           <h2 style={heading2Style}>Our Services</h2>
           <div style={grid}>
@@ -330,7 +460,7 @@ const Home = () => {
           </div>
         </section>
 
-        {/* Call-to-Action Section */}
+        {/* Call to Action */}
         <section
           style={{
             position: "relative",
@@ -349,78 +479,96 @@ const Home = () => {
         >
           <div style={pulseGlowStyle} />
           <h3>
-            We also build landing pages, UI/UX designs, AI voice over videos,
-            and more!
+            We also build landing pages, UI/UX designs, logos, and provide AI
+            voiceover videos to amplify your brand voice.
           </h3>
+          <Link
+            to="/contact"
+            style={{
+              display: "inline-block",
+              marginTop: "2.5rem",
+              fontWeight: "600",
+              padding: "0.75rem 2.5rem",
+              borderRadius: "30px",
+              backgroundColor: "var(--primary-color)",
+              color: "#fff",
+              fontSize: "1.3rem",
+              boxShadow: "0 8px 15px rgba(108, 99, 255, 0.6)",
+              transition: "background-color 0.3s ease",
+              textDecoration: "none",
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.backgroundColor = "#8a7eff";
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.backgroundColor = "var(--primary-color)";
+            }}
+          >
+            Contact Us
+          </Link>
         </section>
 
         {/* Testimonials Section */}
-        <section
-          style={{
-            maxWidth: "768px",
-            margin: "0 auto",
-            backgroundColor: "var(--card-bg)",
-            padding: "3rem 2rem",
-            borderRadius: "18px",
-            boxShadow:
-              "0 12px 24px rgba(108, 99, 255, 0.1), 0 6px 12px rgba(108, 99, 255, 0.05)",
-            position: "relative",
-            overflow: "hidden",
-          }}
-        >
-          <FaQuoteLeft
-            style={{
-              color: "var(--quote-icon)",
-              fontSize: "4rem",
-              position: "absolute",
-              top: "-10px",
-              left: "-10px",
-              opacity: 0.25,
-              userSelect: "none",
-            }}
-          />
+        <section style={{ ...sectionCenterStyle, ...contentCardStyle }}>
+          <h2 style={heading2Style}>Client Testimonials</h2>
           <blockquote
             style={{
-              fontSize: "1.4rem",
-              fontWeight: "600",
-              marginBottom: "1rem",
-              opacity: 1,
-              transition: "opacity 0.8s ease",
-              minHeight: "96px",
+              fontSize: "1.3rem",
+              fontWeight: "500",
+              fontStyle: "italic",
+              color: "var(--text-color)",
+              position: "relative",
+              paddingLeft: "3rem",
+              maxWidth: "640px",
+              margin: "0 auto",
+              lineHeight: 1.6,
+              borderLeft: "4px solid var(--primary-color)",
             }}
-            key={currentTestimonial}
           >
+            <FaQuoteLeft
+              style={{
+                position: "absolute",
+                left: "0",
+                top: "0",
+                fontSize: "3rem",
+                color: "var(--quote-icon)",
+              }}
+            />
             {testimonials[currentTestimonial].quote}
+            <cite
+              style={{
+                display: "block",
+                marginTop: "1rem",
+                fontWeight: "700",
+                color: "var(--primary-color)",
+              }}
+            >
+              — {testimonials[currentTestimonial].author}
+            </cite>
           </blockquote>
-          <p
-            style={{
-              textAlign: "right",
-              fontWeight: "700",
-              fontSize: "1.1rem",
-              color: "var(--primary-color)",
-              letterSpacing: "0.6px",
-              marginTop: "0",
-              marginBottom: "0",
-            }}
-          >
-            — {testimonials[currentTestimonial].author}
-          </p>
         </section>
 
-        {/* WhatsApp Floating Button */}
+        {/* WhatsApp floating button */}
         <div
-          style={whatsappButtonStyle}
           onClick={handleWhatsAppClick}
-          title="Contact us on WhatsApp"
+          title="Chat with us on WhatsApp"
+          style={whatsappButtonStyle}
           role="button"
-          aria-label="WhatsApp contact"
-          tabIndex={0}
-          onKeyPress={(e) => {
-            if (e.key === "Enter" || e.key === " ") handleWhatsAppClick();
-          }}
+          aria-label="WhatsApp Contact"
         >
-          <FaWhatsapp style={{ fontSize: "28px" }} />
+          <FaWhatsapp />
         </div>
+
+        {/* Scroll to top button
+        <div
+          onClick={handleScrollTop}
+          title="Scroll to top"
+          style={scrollTopButtonStyle}
+          role="button"
+          aria-label="Scroll to top"
+        >
+          ↑
+        </div> */}
       </div>
     </>
   );

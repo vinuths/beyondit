@@ -186,13 +186,13 @@ const About = () => {
             <div style={teamMember}>
               <img
                 // src="https://randomuser.me/api/portraits/men/32.jpg"
-                alt="John Doe"
+                // alt="John Doe"
                 style={memberPhoto}
               />
-              <p style={memberName}>Vinuths</p>
+              <p style={memberName}>Vinuth S Gowda</p>
               <p style={memberRole}>Founder & CEO</p>
             </div>
-
+{/* 
             <div style={teamMember}>
               <img
                 // src="https://randomuser.me/api/portraits/women/44.jpg"
@@ -220,8 +220,8 @@ const About = () => {
                 style={memberPhoto}
               />
               <p style={memberName}>Emily Davis</p>
-              <p style={memberRole}>UX/UI Designer</p>
-            </div>
+              <p style={memberRole}>UX/UI Designer</p> */}
+            {/* </div> */}
           </div>
         </section>
       </section>
