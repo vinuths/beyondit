@@ -7,7 +7,16 @@ const ChatWidget = () => {
     { from: "bot", text: "Hi! How can we assist you today?" },
   ]);
   const [input, setInput] = useState("");
+  const [isFocused, setIsFocused] = useState(false);
+  const [isMobile, setIsMobile] = useState(window.innerWidth <= 600);
   const messagesEndRef = useRef(null);
+
+  // Handle resize for responsiveness
+  useEffect(() => {
+    const handleResize = () => setIsMobile(window.innerWidth <= 600);
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
   const sendMessage = () => {
     if (!input.trim()) return;
@@ -34,27 +43,24 @@ const ChatWidget = () => {
   };
 
   useEffect(() => {
-    if (messagesEndRef.current) {
-      messagesEndRef.current.scrollIntoView({ behavior: "smooth" });
-    }
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
 
-  // Styles as JS objects
+  // Responsive styles
   const styles = {
     container: {
       position: "fixed",
-      bottom: 24,
-      right: 24,
+      bottom: isMobile ? 12 : 24,
+      right: isMobile ? 12 : 24,
       zIndex: 9999,
       display: "flex",
       flexDirection: "column",
       alignItems: "flex-end",
       fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
-      userSelect: "none",
     },
     widget: {
-      width: 320,
-      height: 420,
+      width: isMobile ? "90vw" : 320,
+      height: isMobile ? "80vh" : 420,
       backgroundColor: "#fff",
       borderRadius: 12,
       boxShadow: "0 12px 24px rgba(0, 0, 0, 0.2)",
@@ -65,24 +71,23 @@ const ChatWidget = () => {
     header: {
       background: "linear-gradient(90deg, #5a67d8, #4c51bf)",
       color: "white",
-      padding: 16,
+      padding: isMobile ? 12 : 16,
       display: "flex",
       justifyContent: "space-between",
       alignItems: "center",
       fontWeight: 600,
-      fontSize: "1.1rem",
+      fontSize: isMobile ? "1rem" : "1.1rem",
     },
     closeButton: {
       background: "transparent",
       border: "none",
       color: "white",
-      fontSize: "1.3rem",
+      fontSize: isMobile ? "1.1rem" : "1.3rem",
       cursor: "pointer",
-      transition: "color 0.3s ease",
     },
     messages: {
       flexGrow: 1,
-      padding: 16,
+      padding: isMobile ? 12 : 16,
       overflowY: "auto",
       backgroundColor: "#f9fafb",
       display: "flex",
@@ -90,11 +95,10 @@ const ChatWidget = () => {
       gap: 10,
     },
     messageBot: {
-      maxWidth: "70%",
+      maxWidth: "80%",
       padding: "10px 14px",
       borderRadius: "18px 18px 18px 2px",
-      fontSize: "0.9rem",
-      lineHeight: 1.3,
+      fontSize: isMobile ? "0.85rem" : "0.9rem",
       wordWrap: "break-word",
       boxShadow: "0 1px 4px rgba(0,0,0,0.1)",
       backgroundColor: "#e0e7ff",
@@ -102,11 +106,10 @@ const ChatWidget = () => {
       alignSelf: "flex-start",
     },
     messageUser: {
-      maxWidth: "70%",
+      maxWidth: "80%",
       padding: "10px 14px",
       borderRadius: "18px 18px 2px 18px",
-      fontSize: "0.9rem",
-      lineHeight: 1.3,
+      fontSize: isMobile ? "0.85rem" : "0.9rem",
       wordWrap: "break-word",
       boxShadow: "0 1px 4px rgba(0,0,0,0.1)",
       background: "linear-gradient(135deg, #667eea, #764ba2)",
@@ -114,7 +117,7 @@ const ChatWidget = () => {
       alignSelf: "flex-end",
     },
     footer: {
-      padding: "12px 16px",
+      padding: isMobile ? "10px 12px" : "12px 16px",
       borderTop: "1px solid #e2e8f0",
       display: "flex",
       flexDirection: "column",
@@ -126,11 +129,10 @@ const ChatWidget = () => {
       border: "1px solid #cbd5e0",
       borderRadius: 8,
       padding: "10px 12px",
-      fontSize: "1rem",
+      fontSize: isMobile ? "0.95rem" : "1rem",
       resize: "none",
       outline: "none",
       boxSizing: "border-box",
-      transition: "border-color 0.3s ease",
     },
     textareaFocus: {
       borderColor: "#667eea",
@@ -140,28 +142,24 @@ const ChatWidget = () => {
       width: "100%",
       backgroundColor: "#5a67d8",
       color: "white",
-      padding: "10px 0",
+      padding: isMobile ? "8px 0" : "10px 0",
       borderRadius: 8,
       fontWeight: 600,
-      fontSize: "1rem",
+      fontSize: isMobile ? "0.95rem" : "1rem",
       border: "none",
       cursor: "pointer",
-      transition: "background-color 0.3s ease",
     },
     openButton: {
       backgroundColor: "#5a67d8",
       color: "white",
-      padding: 16,
+      padding: isMobile ? 14 : 16,
       borderRadius: "50%",
       boxShadow: "0 8px 16px rgba(90, 103, 216, 0.6)",
       border: "none",
       cursor: "pointer",
-      transition: "background-color 0.3s ease, box-shadow 0.3s ease",
+      transition: "all 0.3s ease",
     },
   };
-
-  // To handle focus style for textarea (inline styles can't handle :focus)
-  const [isFocused, setIsFocused] = useState(false);
 
   return (
     <div style={styles.container}>
@@ -173,8 +171,6 @@ const ChatWidget = () => {
               aria-label="Close chat"
               onClick={() => setOpen(false)}
               style={styles.closeButton}
-              onMouseEnter={(e) => (e.currentTarget.style.color = "#cbd5e0")}
-              onMouseLeave={(e) => (e.currentTarget.style.color = "white")}
             >
               <FaTimes />
             </button>
@@ -206,16 +202,7 @@ const ChatWidget = () => {
               onFocus={() => setIsFocused(true)}
               onBlur={() => setIsFocused(false)}
             />
-            <button
-              onClick={sendMessage}
-              style={styles.sendButton}
-              onMouseEnter={(e) =>
-                (e.currentTarget.style.backgroundColor = "#4c51bf")
-              }
-              onMouseLeave={(e) =>
-                (e.currentTarget.style.backgroundColor = "#5a67d8")
-              }
-            >
+            <button onClick={sendMessage} style={styles.sendButton}>
               Send
             </button>
           </footer>
@@ -227,16 +214,8 @@ const ChatWidget = () => {
           onClick={() => setOpen(true)}
           aria-label="Open chat"
           style={styles.openButton}
-          onMouseEnter={(e) => {
-            e.currentTarget.style.backgroundColor = "#4c51bf";
-            e.currentTarget.style.boxShadow = "0 12px 24px rgba(76, 81, 191, 0.8)";
-          }}
-          onMouseLeave={(e) => {
-            e.currentTarget.style.backgroundColor = "#5a67d8";
-            e.currentTarget.style.boxShadow = "0 8px 16px rgba(90, 103, 216, 0.6)";
-          }}
         >
-          <FaComments size={24} />
+          <FaComments size={isMobile ? 20 : 24} />
         </button>
       )}
     </div>

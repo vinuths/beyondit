@@ -1,9 +1,17 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
 const ServiceCard = ({ icon, title, description, link, darkMode = false }) => {
   const [hover, setHover] = useState(false);
+  const [windowWidth, setWindowWidth] = useState(window.innerWidth);
   const navigate = useNavigate();
+
+  // Track window resize for responsiveness
+  useEffect(() => {
+    const handleResize = () => setWindowWidth(window.innerWidth);
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
   const colors = {
     light: {
@@ -32,6 +40,13 @@ const ServiceCard = ({ icon, title, description, link, darkMode = false }) => {
 
   const theme = darkMode ? colors.dark : colors.light;
 
+  // Responsive sizes
+  const cardPadding = windowWidth < 480 ? "1.2rem" : "2rem";
+  const iconSize = windowWidth < 480 ? "2.5rem" : "3rem";
+  const titleFontSize = windowWidth < 480 ? "1.1rem" : "1.3rem";
+  const descFontSize = windowWidth < 480 ? "0.9rem" : "1rem";
+  const buttonPadding = windowWidth < 480 ? "0.5rem 1rem" : "0.6rem 1.2rem";
+
   const styles = {
     card: {
       backgroundColor: theme.background,
@@ -39,7 +54,7 @@ const ServiceCard = ({ icon, title, description, link, darkMode = false }) => {
       boxShadow: hover
         ? `0 12px 30px ${theme.shadowHover}`
         : `0 6px 16px ${theme.shadow}`,
-      padding: "2rem",
+      padding: cardPadding,
       display: "flex",
       flexDirection: "column",
       alignItems: "center",
@@ -47,25 +62,25 @@ const ServiceCard = ({ icon, title, description, link, darkMode = false }) => {
       transition: "transform 0.3s ease, box-shadow 0.3s ease",
       transform: hover ? "translateY(-6px)" : "translateY(0)",
       cursor: link ? "pointer" : "default",
-      maxWidth: "320px",
+      maxWidth: "90%",
       margin: "1rem auto",
     },
     icon: {
       color: theme.iconColor,
-      fontSize: "3rem",
+      fontSize: iconSize,
       marginBottom: "1rem",
       transition: "transform 0.3s ease",
       transform: hover ? "scale(1.1)" : "scale(1)",
     },
     title: {
       color: theme.textPrimary,
-      fontSize: "1.3rem",
+      fontSize: titleFontSize,
       fontWeight: "700",
       marginBottom: "0.5rem",
     },
     description: {
       color: theme.textSecondary,
-      fontSize: "1rem",
+      fontSize: descFontSize,
       lineHeight: "1.6",
       marginBottom: "1.5rem",
     },
@@ -74,7 +89,7 @@ const ServiceCard = ({ icon, title, description, link, darkMode = false }) => {
       color: theme.buttonTextColor,
       border: "none",
       borderRadius: "8px",
-      padding: "0.6rem 1.2rem",
+      padding: buttonPadding,
       fontWeight: "600",
       fontSize: "0.95rem",
       cursor: "pointer",

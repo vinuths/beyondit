@@ -5,6 +5,7 @@ import { FaArrowUp } from "react-icons/fa";
 const ScrollToTop = () => {
   const { pathname } = useLocation();
   const [visible, setVisible] = useState(false);
+  const [windowWidth, setWindowWidth] = useState(window.innerWidth);
 
   // Scroll to top on route change (smooth)
   useEffect(() => {
@@ -13,21 +14,28 @@ const ScrollToTop = () => {
 
   // Show button when scrolled down 300px
   useEffect(() => {
-    const handleScroll = () => {
-      if (window.pageYOffset > 300) setVisible(true);
-      else setVisible(false);
-    };
+    const handleScroll = () => setVisible(window.pageYOffset > 300);
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
+  // Track window resize for responsiveness
+  useEffect(() => {
+    const handleResize = () => setWindowWidth(window.innerWidth);
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
+  const baseSize = windowWidth < 480 ? 40 : 48; // smaller on mobile
+  const baseSpacing = windowWidth < 480 ? 20 : 40; // bottom/right spacing
+
   const styles = {
     button: {
       position: "fixed",
-      bottom: 40,
-      right: 40,
-      width: 48,
-      height: 48,
+      bottom: baseSpacing,
+      right: baseSpacing,
+      width: baseSize,
+      height: baseSize,
       borderRadius: "50%",
       backgroundColor: "#5a67d8", // Indigo
       color: "white",
@@ -36,7 +44,8 @@ const ScrollToTop = () => {
       cursor: "pointer",
       opacity: visible ? 1 : 0,
       pointerEvents: visible ? "auto" : "none",
-      transition: "opacity 0.3s ease",
+      transition: "opacity 0.3s ease, transform 0.3s ease",
+      transform: visible ? "scale(1)" : "scale(0.7)",
       display: "flex",
       alignItems: "center",
       justifyContent: "center",
@@ -47,7 +56,7 @@ const ScrollToTop = () => {
     },
   };
 
-  const [hover, setHover] = React.useState(false);
+  const [hover, setHover] = useState(false);
 
   return (
     <button
@@ -60,7 +69,7 @@ const ScrollToTop = () => {
       onMouseEnter={() => setHover(true)}
       onMouseLeave={() => setHover(false)}
     >
-      <FaArrowUp size={20} />
+      <FaArrowUp size={windowWidth < 480 ? 16 : 20} />
     </button>
   );
 };

@@ -48,6 +48,8 @@ const About = () => {
 
   const cardStyle = {
     flex: "1 1 250px",
+    minWidth: "250px",
+    maxWidth: "320px",
     background: "var(--card-bg, #f8f9ff)",
     borderRadius: "12px",
     padding: "1.5rem",
@@ -111,6 +113,19 @@ const About = () => {
         />
       </Helmet>
 
+      {/* Mobile responsiveness styles */}
+      <style>{`
+        @media (max-width: 768px) {
+          h1 { font-size: 2.2rem !important; }
+          h2 { font-size: 1.6rem !important; }
+          p { font-size: 1rem !important; }
+          section { padding: 0 1rem !important; }
+          .flex-row { flex-direction: column !important; align-items: center !important; }
+          .team-grid { grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)) !important; }
+          .card, .team-member { width: 90% !important; max-width: none !important; }
+        }
+      `}</style>
+
       <section style={containerStyle}>
         <h1 style={headingStyle}>About BeyondIT</h1>
 
@@ -127,9 +142,10 @@ const About = () => {
         </p>
 
         {/* Mission, Vision, Values */}
-        <div style={flexRow}>
+        <div style={flexRow} className="flex-row">
           <div
             style={cardStyle}
+            className="card"
             onMouseEnter={(e) => (e.currentTarget.style.transform = "scale(1.05)")}
             onMouseLeave={(e) => (e.currentTarget.style.transform = "scale(1)")}
           >
@@ -145,6 +161,7 @@ const About = () => {
 
           <div
             style={cardStyle}
+            className="card"
             onMouseEnter={(e) => (e.currentTarget.style.transform = "scale(1.05)")}
             onMouseLeave={(e) => (e.currentTarget.style.transform = "scale(1)")}
           >
@@ -160,6 +177,7 @@ const About = () => {
 
           <div
             style={cardStyle}
+            className="card"
             onMouseEnter={(e) => (e.currentTarget.style.transform = "scale(1.05)")}
             onMouseLeave={(e) => (e.currentTarget.style.transform = "scale(1)")}
           >
@@ -181,9 +199,9 @@ const About = () => {
             Meet the Team
           </h2>
 
-          <div style={teamGrid}>
+          <div style={teamGrid} className="team-grid">
             {/* Replace images and names with your real team data */}
-            <div style={teamMember}>
+            <div style={teamMember} className="team-member">
               <img
                 // src="https://randomuser.me/api/portraits/men/32.jpg"
                 // alt="John Doe"
@@ -192,7 +210,7 @@ const About = () => {
               <p style={memberName}>Vinuth S Gowda</p>
               <p style={memberRole}>Founder & CEO</p>
             </div>
-{/* 
+            {/* 
             <div style={teamMember}>
               <img
                 // src="https://randomuser.me/api/portraits/women/44.jpg"
@@ -220,8 +238,9 @@ const About = () => {
                 style={memberPhoto}
               />
               <p style={memberName}>Emily Davis</p>
-              <p style={memberRole}>UX/UI Designer</p> */}
-            {/* </div> */}
+              <p style={memberRole}>UX/UI Designer</p>
+            </div>
+            */}
           </div>
         </section>
       </section>

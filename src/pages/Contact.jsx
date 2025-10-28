@@ -179,6 +179,19 @@ const Contact = () => {
         />
       </Helmet>
 
+      {/* Mobile responsiveness styles */}
+      <style>{`
+        @media (max-width: 768px) {
+          h1 { font-size: 2rem !important; }
+          input, textarea { font-size: 0.95rem !important; padding: 0.5rem 0.9rem !important; }
+          ${/* Stack contact cards vertically */ ""}
+          div[style*='flex-wrap: wrap'] { flex-direction: column !important; align-items: center !important; }
+          div[style*='flex: 1 1 250px'] { width: 90% !important; max-width: none !important; }
+          ${/* Reduce map height on mobile */ ""}
+          iframe { height: 250px !important; }
+        }
+      `}</style>
+
       <div style={containerStyle}>
         <h1 style={headingStyle}>Get in Touch</h1>
 
