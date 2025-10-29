@@ -87,8 +87,8 @@ const Footer = () => {
         onMouseLeave={() => setHovered(false)}
         aria-label="Visit our GitHub repository"
       >
-        <FaGithub style={styles.icon} />
-        GitHub
+        {/* <FaGithub style={styles.icon} />
+        GitHub */}
       </a>
     </footer>
   );
