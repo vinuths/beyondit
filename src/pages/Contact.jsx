@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Helmet } from "react-helmet";
 import { FaMapMarkerAlt, FaPhoneAlt, FaEnvelope } from "react-icons/fa";
-
+import emailjs from "@emailjs/browser";
 const Contact = () => {
   // Detect dark mode based on user system preference
   const darkMode =
@@ -16,10 +16,27 @@ const Contact = () => {
     setFormData((f) => ({ ...f, [e.target.name]: e.target.value }));
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    setSubmitted(true);
-  };
+ const handleSubmit = (e) => {
+  e.preventDefault();
+  emailjs
+    .send(
+      "YOUR_SERVICE_ID",      // get this from EmailJS
+      "YOUR_TEMPLATE_ID",     // get this from EmailJS
+      formData,               // { name, email, message }
+      "YOUR_PUBLIC_KEY"       // get this from EmailJS
+    )
+    .then(
+      (result) => {
+        console.log(result.text);
+        setSubmitted(true);
+      },
+      (error) => {
+        console.log(error.text);
+        alert("Something went wrong. Please try again.");
+      }
+    );
+};
+
 
   const containerStyle = {
     maxWidth: "1000px",
