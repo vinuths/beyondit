@@ -7,6 +7,7 @@ const Navbar = () => {
   const [menuOpen, setMenuOpen] = useState(false);
   const { darkMode, setDarkMode } = useDarkMode();
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
+const [servicesOpen, setServicesOpen] = useState(false);
 
   useEffect(() => {
     const handleResize = () => setWindowWidth(window.innerWidth);
@@ -127,18 +128,45 @@ const Navbar = () => {
     darkModeButtonHover: {
       backgroundColor: darkMode ? "#5a67d8" : "#cbd5e0",
     },
-    hamburgerButton: {
-      backgroundColor: "transparent",
-      border: "none",
-      cursor: "pointer",
-      color: darkMode ? "#e2e8f0" : "#4a5568",
-      display: windowWidth < 768 ? "flex" : "none",
-      alignItems: "center",
-      justifyContent: "center",
-      padding: 10,
-      borderRadius: 8,
-      transition: "background-color 0.3s ease",
-    },
+   hamburgerButton: {
+  backgroundColor: "transparent",
+  border: "none",
+  cursor: "pointer",
+  color: darkMode ? "#e2e8f0" : "#4a5568",
+  display: windowWidth < 768 ? "flex" : "none",
+  alignItems: "center",
+  justifyContent: "center",
+  padding: 10,
+  borderRadius: 8,
+  marginTop: "25px",   // 👈 pushes the button down
+  transition: "background-color 0.3s ease",
+},
+dropdown: {
+  position: "absolute",
+  top: "38px",
+  left: 0,
+  background: darkMode ? "#1f2937" : "#fff",
+  borderRadius: "10px",
+  boxShadow: "0 10px 25px rgba(0,0,0,0.15)",
+  padding: "10px 0",
+  minWidth: "220px",
+  display: servicesOpen ? "block" : "none",
+  zIndex: 1000,
+},
+
+dropdownItem: {
+  display: "block",
+  padding: "10px 18px",
+  color: darkMode ? "#e2e8f0" : "#374151",
+  textDecoration: "none",
+  fontSize: "15px",
+  transition: "all 0.2s",
+},
+
+dropdownItemHover: {
+  backgroundColor: darkMode ? "#374151" : "#eef2ff",
+  color: baseColor,
+},
     hamburgerHover: {
       backgroundColor: darkMode ? "#2d3748" : "#ebf4ff",
     },
@@ -203,7 +231,13 @@ const Navbar = () => {
       userSelect: "none",
     },
   };
-
+const serviceDropdown = [
+  { label: "Web Development", path: "/services/web-development" },
+  { label: "UI/UX Design", path: "/services/ui-ux-design" },
+  { label: "Logo Design", path: "/services/logo-design" },
+  { label: "Digital Marketing", path: "/services/digital-marketing" },
+  { label: "AI Generation & Voice Videos", path: "/services/ai-generation" },
+];
   return (
     <nav style={styles.nav}>
       {/* Logo */}
@@ -218,23 +252,73 @@ const Navbar = () => {
 
       {/* Desktop Menu */}
       <div style={styles.desktopMenu}>
-        {navLinks.map(({ to, label }, idx) => (
+      {navLinks.map(({ to, label }, idx) => {
+
+  if (label === "Services") {
+  return (
+    <div
+      key={label}
+      style={{
+        position: "relative",
+        paddingBottom: "12px" // prevents dropdown closing gap
+      }}
+      onMouseEnter={() => setServicesOpen(true)}
+      onMouseLeave={() => setServicesOpen(false)}
+    >
+      <span
+        style={{
+          ...styles.link,
+          cursor: "pointer",
+        }}
+      >
+        Services ▾
+      </span>
+
+      <div
+        style={{
+          ...styles.dropdown,
+          display: servicesOpen ? "block" : "none",
+        }}
+      >
+        {serviceDropdown.map((service, i) => (
           <NavLink
-            key={to}
-            to={to}
-            end
-            style={({ isActive }) => ({
-              ...styles.link,
-              ...(isActive ? styles.activeLink : {}),
-              ...(hoveredIndex === idx ? styles.linkHover : {}),
-            })}
-            onMouseEnter={() => setHoveredIndex(idx)}
-            onMouseLeave={() => setHoveredIndex(null)}
+            key={i}
+            to={service.path}
+            style={styles.dropdownItem}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.backgroundColor = darkMode
+                ? "#374151"
+                : "#eef2ff";
+              e.currentTarget.style.color = baseColor;
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.backgroundColor = "transparent";
+              e.currentTarget.style.color = darkMode
+                ? "#e2e8f0"
+                : "#374151";
+            }}
           >
-            {label}
+            {service.label}
           </NavLink>
         ))}
-
+      </div>
+    </div>
+  );
+}
+  return (
+    <NavLink
+      key={to}
+      to={to}
+      end
+      style={({ isActive }) => ({
+        ...styles.link,
+        ...(isActive ? styles.activeLink : {}),
+      })}
+    >
+      {label}
+    </NavLink>
+  );
+})}
         {/* CTA Button */}
         <button
           onClick={() => (window.location.href = "/contact")}
@@ -249,24 +333,7 @@ const Navbar = () => {
           Get a Quote
         </button>
 
-        {/* Dark Mode Toggle */}
-        <button
-          onClick={toggleDarkMode}
-          aria-label="Toggle dark mode"
-          title={darkMode ? "Switch to light mode" : "Switch to dark mode"}
-          style={{
-            ...styles.darkModeButton,
-            ...(darkModeHover ? styles.darkModeButtonHover : {}),
-          }}
-          onMouseEnter={() => setDarkModeHover(true)}
-          onMouseLeave={() => setDarkModeHover(false)}
-        >
-          {darkMode ? (
-            <FaSun style={{ color: "#f6e05e" }} size={18} />
-          ) : (
-            <FaMoon style={{ color: "#818cf8" }} size={18} />
-          )}
-        </button>
+    
       </div>
 
       {/* Mobile Hamburger */}
@@ -336,7 +403,7 @@ const Navbar = () => {
           </button>
 
           {/* Dark Mode Mobile */}
-          <button
+          {/* <button
             onClick={() => {
               toggleDarkMode();
               setMenuOpen(false);
@@ -348,7 +415,7 @@ const Navbar = () => {
           >
             {darkMode ? <FaSun /> : <FaMoon />}
             <span>{darkMode ? "Light Mode" : "Dark Mode"}</span>
-          </button>
+          </button> */}
         </nav>
       </div>
     </nav>

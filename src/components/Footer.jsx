@@ -1,95 +1,168 @@
 import React, { useState, useEffect } from "react";
-import { FaGithub } from "react-icons/fa";
+import { Link } from "react-router-dom";
+import {
+  FaGithub,
+  FaInstagram,
+  FaLinkedin,
+  FaEnvelope,
+  FaPhone,
+  FaMapMarkerAlt,
+} from "react-icons/fa";
 
 const Footer = () => {
-  const [isMobile, setIsMobile] = useState(window.innerWidth <= 600);
+  const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
 
-  useEffect(() => {
-    const handleResize = () => setIsMobile(window.innerWidth <= 600);
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
-  }, []);
-
+  
   const styles = {
     footer: {
-      background: "linear-gradient(135deg, #4c51bf, #667eea)",
+      background: "linear-gradient(135deg,#4c51bf,#667eea)",
       color: "#e0e7ff",
-      textAlign: "center",
-      padding: isMobile ? "16px 12px" : "24px 16px",
-      marginTop: isMobile ? 24 : 40,
+      marginTop: 60,
+      padding: isMobile ? "40px 20px" : "60px 40px",
       fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
-      userSelect: "none",
-      boxShadow: "0 -4px 10px rgba(102, 126, 234, 0.4)",
-      borderRadius: "12px 12px 0 0",
-      display: "flex",
-      flexDirection: "column",
-      alignItems: "center",
-      justifyContent: "center",
-      gap: isMobile ? 6 : 8,
     },
-    text: {
-      margin: 0,
-      fontSize: isMobile ? "0.9rem" : "1rem",
-      fontWeight: 500,
-      letterSpacing: "0.04em",
-      textShadow: "0 1px 3px rgba(0, 0, 0, 0.2)",
-      lineHeight: 1.4,
+
+    container: {
+      maxWidth: "1200px",
+      margin: "0 auto",
+      display: "grid",
+      gridTemplateColumns: isMobile ? "1fr" : "repeat(4,1fr)",
+      gap: "40px",
+      textAlign: isMobile ? "center" : "left",
     },
-    strong: {
-      fontWeight: 700,
+
+    heading: {
+      fontSize: "1.2rem",
+      fontWeight: "700",
+      marginBottom: "16px",
       color: "#c3dafe",
     },
+
+    text: {
+      fontSize: "0.95rem",
+      lineHeight: 1.6,
+      opacity: 0.9,
+    },
+
     link: {
-      marginTop: isMobile ? 4 : 8,
-      display: "inline-flex",
-      flexDirection: isMobile ? "column" : "row",
-      alignItems: "center",
-      justifyContent: "center",
-      color: "#e0e7ff",
+      display: "block",
       textDecoration: "none",
-      fontWeight: 600,
-      fontSize: isMobile ? "0.95rem" : "1.1rem",
-      cursor: "pointer",
-      transition: "color 0.3s ease, text-decoration 0.3s ease",
-      userSelect: "none",
-      gap: isMobile ? "4px" : "6px",
-      padding: isMobile ? "5px 10px" : "6px 12px",
-      borderRadius: "6px",
+      color: "#e0e7ff",
+      marginBottom: "8px",
+      fontSize: "0.95rem",
     },
-    linkHover: {
-      color: "#a3bffa",
-      textDecoration: "underline",
-      backgroundColor: "rgba(255, 255, 255, 0.1)",
+
+    contactItem: {
+      display: "flex",
+      alignItems: "center",
+      gap: 10,
+      marginBottom: 10,
+      fontSize: "0.95rem",
+      justifyContent: isMobile ? "center" : "flex-start",
     },
-    icon: {
-      fontSize: isMobile ? "1.1rem" : "1.3rem",
-      transition: "color 0.3s ease",
+
+    socialRow: {
+      marginTop: 10,
+      display: "flex",
+      gap: 14,
+      justifyContent: isMobile ? "center" : "flex-start",
+      fontSize: "1.2rem",
+    },
+
+    divider: {
+      marginTop: 40,
+      borderTop: "1px solid rgba(255,255,255,0.2)",
+      paddingTop: 20,
+      textAlign: "center",
+      fontSize: "0.9rem",
+      opacity: 0.9,
     },
   };
 
-  const [hovered, setHovered] = useState(false);
-
   return (
     <footer style={styles.footer}>
-      <p style={styles.text}>
-        © 2025 <strong style={styles.strong}>BeyondIT</strong>. All rights reserved.
-      </p>
+      <div style={styles.container}>
+        
+        {/* Company */}
+        <div>
+          <h3 style={styles.heading}>BeyondIT</h3>
+          <p style={styles.text}>
+            We build modern websites, digital solutions, and scalable
+            platforms to help businesses grow online.
+          </p>
 
-      <a
-        href="https://github.com/vinuths/beyondit"
-        target="_blank"
-        rel="noreferrer"
-        style={{
-          ...styles.link,
-          ...(hovered ? styles.linkHover : {}),
-        }}
-        onMouseEnter={() => setHovered(true)}
-        onMouseLeave={() => setHovered(false)}
-        aria-label="Visit our GitHub repository"
-      >
-        {/* <FaGithub style={styles.icon} />
-        GitHub */}
-      </a>
+          <div style={styles.socialRow}>
+            <a href="https://github.com/vinuths" target="_blank" rel="noreferrer">
+              <FaGithub />
+            </a>
+
+            <a href="#">
+              <FaLinkedin />
+            </a>
+
+            <a href="#">
+              <FaInstagram />
+            </a>
+          </div>
+        </div>
+
+        {/* Quick Links */}
+        <div>
+          <h3 style={styles.heading}>Quick Links</h3>
+
+          <Link to="/" style={styles.link}>Home</Link>
+          <Link to="/about" style={styles.link}>About</Link>
+          <Link to="/services" style={styles.link}>Services</Link>
+          <Link to="/contact" style={styles.link}>Contact</Link>
+        </div>
+
+        {/* Services */}
+        <div>
+          <h3 style={styles.heading}>Services</h3>
+
+          <Link to="/services/web-development" style={styles.link}>
+            Web Development
+          </Link>
+
+          <Link to="/services/ui-ux-design" style={styles.link}>
+            UI / UX Design
+          </Link>
+
+          <Link to="/services/logo-design" style={styles.link}>
+            Logo Design
+          </Link>
+
+          <Link to="/services/digital-marketing" style={styles.link}>
+            Digital Marketing
+          </Link>
+
+          <Link to="/services/ai-generation" style={styles.link}>
+            AI Video Generation
+          </Link>
+        </div>
+
+        {/* Contact */}
+        <div>
+          <h3 style={styles.heading}>Contact</h3>
+
+          <div style={styles.contactItem}>
+            <FaEnvelope /> hello@beyondit.tech
+          </div>
+
+          <div style={styles.contactItem}>
+            <FaPhone /> +91 9743880882
+          </div>
+
+          <div style={styles.contactItem}>
+            <FaMapMarkerAlt />18 bachegowda layout Anjanpura Bangalore 
+          </div>
+        </div>
+
+      </div>
+
+      <div style={styles.divider}>
+        © {new Date().getFullYear()} <strong>BeyondIT</strong>. All Rights Reserved.
+      </div>
     </footer>
   );
 };
