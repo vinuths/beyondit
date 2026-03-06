@@ -34,27 +34,35 @@ const [servicesOpen, setServicesOpen] = useState(false);
   const baseColor = darkMode ? "#a3bffa" : "#5a67d8"; // Indigo base color
 
   const styles = {
-    nav: {
-      position: "sticky",
-      top: 16,
-      zIndex: 100,
-      backgroundColor: darkMode ? "rgba(17, 24, 39, 0.85)" : "rgba(255, 255, 255, 0.9)",
-      backdropFilter: "blur(12px)",
-      boxShadow: darkMode
-        ? "0 8px 24px rgba(0,0,0,0.4)"
-        : "0 8px 24px rgba(90,103,216,0.15)",
-      padding: "12px 40px",
-      borderRadius: 12,
-      maxWidth: 960,
-      margin: "16px auto",
-      display: "flex",
-      justifyContent: "space-between",
-      alignItems: "center",
-      flexWrap: "wrap",
-      fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
-      userSelect: "none",
-      transition: "background-color 0.4s ease, box-shadow 0.4s ease",
-    },
+  nav: {
+  position: "sticky",
+  top: 0,
+  width: "100%",
+  zIndex: 100,
+
+  background: darkMode
+    ? "rgba(15,23,42,0.75)"
+    : "rgba(255,255,255,0.7)",
+
+  backdropFilter: "blur(16px)",
+  WebkitBackdropFilter: "blur(16px)",
+
+  borderBottom: darkMode
+    ? "1px solid rgba(255,255,255,0.08)"
+    : "1px solid rgba(0,0,0,0.05)",
+
+  boxShadow: darkMode
+    ? "0 10px 30px rgba(0,0,0,0.6)"
+    : "0 8px 25px rgba(0,0,0,0.08)",
+
+  padding: "14px 50px",
+
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "space-between",
+
+  transition: "all 0.35s ease",
+},
     logo: {
       display: "flex",
       alignItems: "center",
@@ -72,21 +80,26 @@ const [servicesOpen, setServicesOpen] = useState(false);
       transform: "rotate(-15deg)",
       color: baseColor,
     },
-    desktopMenu: {
-      display: windowWidth >= 768 ? "flex" : "none",
-      alignItems: "center",
-      gap: 36,
-      fontSize: 16,
-      fontWeight: 500,
-    },
+desktopMenu: {
+  display: windowWidth >= 768 ? "flex" : "none",
+  alignItems: "center",
+  gap: 36,
+  fontSize: 16,
+  fontWeight: 500,
+
+  position: windowWidth >= 768 ? "absolute" : "static",
+  left: windowWidth >= 768 ? "50%" : "auto",
+  transform: windowWidth >= 768 ? "translateX(-50%)" : "none",
+},
     link: {
-      position: "relative",
-      color: darkMode ? "#e2e8f0" : "#4a5568",
-      textDecoration: "none",
-      paddingBottom: 6,
-      cursor: "pointer",
-      transition: "color 0.3s ease",
-    },
+  position: "relative",
+  color: darkMode ? "#e2e8f0" : "#374151",
+  textDecoration: "none",
+  paddingBottom: 6,
+  fontSize: "16px",
+  fontWeight: 500,
+  transition: "color 0.25s ease",
+},
     activeLink: {
       color: baseColor,
       fontWeight: 600,
@@ -138,7 +151,7 @@ const [servicesOpen, setServicesOpen] = useState(false);
   justifyContent: "center",
   padding: 10,
   borderRadius: 8,
-  marginTop: "25px",   // 👈 pushes the button down
+  marginTop: "45px",   // 👈 pushes the button down
   transition: "background-color 0.3s ease",
 },
 dropdown: {
@@ -239,17 +252,23 @@ const serviceDropdown = [
   { label: "AI Generation & Voice Videos", path: "/services/ai-generation" },
 ];
   return (
-    <nav style={styles.nav}>
-      {/* Logo */}
-      <Link
-        to="/"
-        style={styles.logo}
-        aria-label="Homepage"
-      >
-        <FaLaptopCode style={styles.logoIcon} size={28} />
-        <span>BeyondIT</span>
-      </Link>
-
+  <nav style={styles.nav}>
+  {/* Logo */}
+  <Link
+    to="/"
+    style={styles.logo}
+    aria-label="Homepage"
+  >
+    <img
+      src="/beyonditlogo.png"
+      alt="BeyondIT Logo"
+      style={{
+        height: "45px",
+        width: "auto",
+        objectFit: "contain"
+      }}
+    />
+  </Link>
       {/* Desktop Menu */}
       <div style={styles.desktopMenu}>
       {navLinks.map(({ to, label }, idx) => {

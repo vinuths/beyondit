@@ -92,25 +92,45 @@ const globalStyles = `
   90% { opacity: 1; transform: translateX(0); }
   100% { opacity: 0; transform: translateX(-60px); }
 }
-  .hero{
-  height:65vh;
+.hero{
+  min-height:90vh;
   display:flex;
   align-items:center;
   justify-content:center;
   text-align:center;
   position:relative;
-  background-image:url("https://images.unsplash.com/photo-1498050108023-c5249f4df085");
+  background-image:url("/hero.png");
   background-size:cover;
   background-position:center;
   overflow:hidden;
 }
 
+/* Light gradient overlay instead of dark box */
+.hero::before{
+  content:"";
+  position:absolute;
+  top:0;
+  left:0;
+  width:100%;
+  height:100%;
+  background:linear-gradient(
+    rgba(10,10,40,0.55),
+    rgba(10,10,40,0.65)
+  );
+  z-index:1;
+}
+
+/* Content container */
 .hero-overlay{
-  background:rgba(14,14,46,0.75);
-  padding:50px;
+  position:relative;
+  z-index:2;
+  padding:40px;
   border-radius:16px;
   max-width:700px;
-  backdrop-filter:blur(6px);
+  backdrop-filter:blur(4px);
+  margin-top:150px;
+
+  background:rgba(20, 20, 60, 0.55); /* semi transparent background */
 }
 
 .hero h1{
@@ -151,13 +171,14 @@ const globalStyles = `
   background:transparent;
   border:2px solid var(--primary-color);
 }
+  
 `;
 
 const pageBackgroundStyle = {
   background: "var(--bg-color)",
   minHeight: "100vh",
-  paddingTop: "2rem",
-  paddingBottom: "2rem",
+  paddingTop: "0",     // ✅ remove gap
+  paddingBottom: "0",
   fontFamily: "'Poppins', sans-serif",
   backgroundAttachment: "fixed",
   backgroundImage: "linear-gradient(to bottom, var(--bg-color), #eaeaff)",
@@ -397,11 +418,7 @@ const Home = () => {
 
   <div className="hero-overlay">
 
-    <h1>BeyondIT Studio</h1>
-
-    <p>
-      Modern Websites & Digital Solutions For Growing Businesses
-    </p>
+   
 
     <div className="hero-buttons">
 
@@ -779,7 +796,7 @@ const Home = () => {
   style={{
     width: "100%",
     background: "linear-gradient(135deg, #6C63FF, #8B85FF)",
-    padding: "90px 20px",
+    padding: "100px 20px",
     marginTop: "80px",
   }}
 >
@@ -805,21 +822,24 @@ const Home = () => {
     <p
       style={{
         maxWidth: "700px",
-        margin: "0 auto 60px",
+        margin: "0 auto 80px",
         fontSize: "16px",
         opacity: "0.9",
       }}
     >
-      We follow a structured and proven workflow to deliver high-quality
-      digital solutions for every client.
+      We follow a structured workflow to deliver high-quality digital
+      solutions for every client.
     </p>
 
-    {/* Process Steps */}
+    {/* Timeline */}
     <div
       style={{
-        display: "grid",
-        gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))",
-        gap: "30px",
+        display: "flex",
+        justifyContent: "space-between",
+        alignItems: "flex-start",
+        flexWrap: "wrap",
+        gap: "40px",
+        position: "relative",
       }}
     >
       {[
@@ -847,43 +867,50 @@ const Home = () => {
         <div
           key={i}
           style={{
-            background: "rgba(255,255,255,0.12)",
-            backdropFilter: "blur(10px)",
-            borderRadius: "16px",
-            padding: "30px 20px",
-            boxShadow: "0 10px 25px rgba(0,0,0,0.2)",
-            transition: "0.3s",
-          }}
-          onMouseEnter={(e) => {
-            e.currentTarget.style.transform = "translateY(-8px)";
-          }}
-          onMouseLeave={(e) => {
-            e.currentTarget.style.transform = "translateY(0)";
+            flex: "1 1 220px",
+            position: "relative",
+            textAlign: "center",
           }}
         >
-          <h3
+          {/* Circle Step */}
+          <div
             style={{
-              fontSize: "28px",
-              marginBottom: "10px",
+              width: "70px",
+              height: "70px",
+              borderRadius: "50%",
+              background: "white",
+              color: "#6C63FF",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              fontSize: "22px",
               fontWeight: "700",
+              margin: "0 auto 20px",
+              boxShadow: "0 10px 25px rgba(0,0,0,0.25)",
             }}
           >
             {item.step}
-          </h3>
+          </div>
 
+          {/* Title */}
           <h4
             style={{
               fontSize: "18px",
               marginBottom: "10px",
+              fontWeight: "600",
             }}
           >
             {item.title}
           </h4>
 
+          {/* Desc */}
           <p
             style={{
               fontSize: "14px",
               opacity: "0.9",
+              lineHeight: "1.6",
+              maxWidth: "240px",
+              margin: "auto",
             }}
           >
             {item.desc}
@@ -894,128 +921,145 @@ const Home = () => {
   </div>
 </section>
 
-
 {/* Our Work / Industries */}
+
 <section
   style={{
-    padding: "20px 10px",
+    padding: "20px 20px",
     marginTop: "80px",
   }}
 >
-  <div
-    style={{
-      maxWidth: "1200px",
-      margin: "auto",
-      textAlign: "center",
-    }}
-  >
-{/* Section Divider */}
+
+{/* Section Divider (OUTSIDE container) */}
 <div
   style={{
-    width: "100%",
-    height: "3px",
+    maxWidth: "1200px",
     margin: "0 auto 40px",
+    height: "3px",
     borderRadius: "10px",
-    background: "linear-gradient(90deg, transparent, #6C63FF, #8B5CF6, #06B6D4, transparent)",
+    background:
+      "linear-gradient(90deg, transparent, #6C63FF, #8B5CF6, #06B6D4, transparent)",
   }}
 ></div>
-    {/* Heading */}
-    <h2
-      style={{
-        fontSize: "36px",
-        fontWeight: "700",
-        marginBottom: "10px",
-        color: "var(--primary-color)",
-      }}
-    >
-      Websites We Build
-    </h2>
 
-    <p
-      style={{
-        maxWidth: "650px",
-        margin: "0 auto 60px",
-        color: "var(--text-color)",
-        lineHeight: "1.6",
-      }}
-    >
-      We create modern, high-performance websites tailored for different
-      industries to help businesses grow online and attract more customers.
-    </p>
+{/* White Container */}
+<div
+  style={{
+    maxWidth: "1200px",
+    margin: "auto",
+    background: "#ffffff",
+    borderRadius: "20px",
+    padding: "50px 40px",
+  }}
+>
 
-    {/* GRID */}
-    <div
-      style={{
-        display: "grid",
-        gridTemplateColumns: "repeat(auto-fit, minmax(260px,1fr))",
-        gap: "30px",
-      }}
-    >
-      {[
-        {
-          title: "Real Estate Website",
-          desc: "Property listings with filters, maps and enquiry forms.",
-          img: "https://images.unsplash.com/photo-1560518883-ce09059eeffa",
-        },
-        {
-          title: "Cafe / Restaurant Website",
-          desc: "Menus, table booking and online ordering systems.",
-          img: "https://images.unsplash.com/photo-1504674900247-0877df9cc836",
-        },
-        {
-          title: "Gym / Fitness Website",
-          desc: "Membership plans, trainers and class scheduling.",
-          img: "https://images.unsplash.com/photo-1554284126-aa88f22d8b74",
-        },
-        {
-          title: "Clinic / Hospital Website",
-          desc: "Doctor profiles, appointments and services.",
-          img: "https://images.unsplash.com/photo-1588776814546-ec7e1c8a4f12",
-        },
-        {
-          title: "Corporate Business Website",
-          desc: "Professional branding and service showcase.",
-          img: "https://images.unsplash.com/photo-1492724441997-5dc865305da7",
-        },
-        {
-          title: "E-Commerce Website",
-          desc: "Online stores with products, payments and orders.",
-          img: "https://images.unsplash.com/photo-1556742049-0cfed4f6a45d",
-        },
-        {
-          title: "Portfolio Website",
-          desc: "Personal websites for developers and creators.",
-          img: "https://images.unsplash.com/photo-1498050108023-c5249f4df085",
-        },
-        {
-          title: "Education / School Website",
-          desc: "Admissions, announcements and school information.",
-          img: "https://images.unsplash.com/photo-1523240795612-9a054b0db644",
-        },
-      ].map((project, i) => (
-        <div
-          key={i}
-          style={{
-            borderRadius: "18px",
-            overflow: "hidden",
-            background: "var(--card-bg)",
-            boxShadow: "0 8px 20px rgba(0,0,0,0.08)",
-           
-            cursor: "pointer",
-          }}
-          onMouseEnter={(e) => {
-            e.currentTarget.style.transform = "translateY(-10px)";
-            e.currentTarget.style.boxShadow =
-              "0 15px 40px rgba(108,99,255,0.18)";
-          }}
-          onMouseLeave={(e) => {
-            e.currentTarget.style.transform = "translateY(0)";
-            e.currentTarget.style.boxShadow = "0 15px 35px rgba(0,0,0,0.08)";
-          }}
-        >
-          {/* Image */}
-          <div style={{ overflow: "hidden" }}>
-            <img
+{/* Heading */}
+<h2
+  style={{
+    ...heading2Style,
+    textAlign: "center",
+  }}
+>
+  Websites We Build
+</h2>
+
+<p
+  style={{
+    maxWidth: "720px",
+    margin: "0 auto 60px",
+    textAlign: "center",
+    color: "var(--text-color)",
+    fontSize: "18px",
+    fontWeight: "500",
+    lineHeight: "1.7",
+    opacity: "0.9",
+    letterSpacing: "0.4px",
+  }}
+>
+  We create modern, high-performance websites tailored for different
+  industries to help businesses grow online and attract more customers.
+</p>
+
+{/* GRID */}
+<div
+  style={{
+    display: "grid",
+    gridTemplateColumns: "repeat(auto-fit, minmax(260px,1fr))",
+    gap: "30px",
+  }}
+>
+{[
+  {
+    title: "Real Estate Website",
+    desc: "Property listings with filters, maps and enquiry forms.",
+    img: "https://images.unsplash.com/photo-1560518883-ce09059eeffa",
+  },
+  {
+    title: "Cafe / Restaurant Website",
+    desc: "Menus, table booking and online ordering systems.",
+    img: "https://images.unsplash.com/photo-1504674900247-0877df9cc836",
+  },
+  {
+    title: "Gym / Fitness Website",
+    desc: "Membership plans, trainers and class scheduling.",
+    img: "https://images.unsplash.com/photo-1554284126-aa88f22d8b74",
+  },
+  {
+    title: "Clinic / Hospital Website",
+    desc: "Doctor profiles, appointments and services.",
+    img: "https://images.unsplash.com/photo-1588776814546-ec7e1c8a4f12",
+  },
+  {
+    title: "Corporate Business Website",
+    desc: "Professional branding and service showcase.",
+    img: "https://images.unsplash.com/photo-1492724441997-5dc865305da7",
+  },
+  {
+    title: "E-Commerce Website",
+    desc: "Online stores with products, payments and orders.",
+    img: "https://images.unsplash.com/photo-1556742049-0cfed4f6a45d",
+  },
+  {
+    title: "Portfolio Website",
+    desc: "Personal websites for developers and creators.",
+    img: "https://images.unsplash.com/photo-1498050108023-c5249f4df085",
+  },
+  {
+    title: "Education / School Website",
+    desc: "Admissions, announcements and school information.",
+    img: "https://images.unsplash.com/photo-1523240795612-9a054b0db644",
+  },
+].map((project, i) => (
+<div
+  key={i}
+  style={{
+    borderRadius: "18px",
+    overflow: "hidden",
+    background: "var(--card-bg)",
+    border: "1px solid rgba(108,99,255,0.25)",
+    boxShadow: "0 8px 25px rgba(0,0,0,0.08)",
+    transition: "all 0.35s ease",
+    cursor: "pointer",
+  }}
+  onMouseEnter={(e) => {
+    e.currentTarget.style.transform = "translateY(-12px)";
+    e.currentTarget.style.boxShadow =
+      "0 18px 40px rgba(108,99,255,0.25)";
+    e.currentTarget.style.border =
+      "1px solid rgba(108,99,255,0.55)";
+  }}
+  onMouseLeave={(e) => {
+    e.currentTarget.style.transform = "translateY(0)";
+    e.currentTarget.style.boxShadow =
+      "0 8px 25px rgba(0,0,0,0.08)";
+    e.currentTarget.style.border =
+      "1px solid rgba(108,99,255,0.25)";
+  }}
+>
+
+{/* Image */}
+<div style={{ overflow: "hidden" }}>
+<img
   src={`${project.img}?auto=format&fit=crop&w=800&q=60`}
   alt={project.title}
   loading="lazy"
@@ -1023,263 +1067,414 @@ const Home = () => {
     width: "100%",
     height: "190px",
     objectFit: "cover",
-    transition: "transform 0.35s ease",
+    transition: "transform 0.4s ease",
   }}
   onMouseEnter={(e) => {
-    e.currentTarget.style.transform = "scale(1.05)";
+    e.currentTarget.style.transform = "scale(1.08)";
   }}
   onMouseLeave={(e) => {
     e.currentTarget.style.transform = "scale(1)";
   }}
 />
-          </div>
+</div>
 
-          {/* Content */}
-          <div style={{ padding: "22px" }}>
-            <h3
-              style={{
-                color: "var(--primary-color)",
-                marginBottom: "8px",
-                fontSize: "18px",
-              }}
-            >
-              {project.title}
-            </h3>
-
-            <p
-              style={{
-                color: "var(--text-color)",
-                fontSize: "14px",
-                lineHeight: "1.6",
-              }}
-            >
-              {project.desc}
-            </p>
-          </div>
-        </div>
-      ))}
-    </div>
-
-    {/* Bottom Text */}
-   <div
+{/* Content */}
+<div style={{ padding: "22px" }}>
+<h3
   style={{
-    marginTop: "70px",
-    padding: "28px 35px",
-    borderRadius: "16px",
-    background: "linear-gradient(135deg, #6C63FF10, #8B5CF610)",
-    border: "1px solid #6C63FF30",
-    maxWidth: "750px",
-    marginLeft: "auto",
-    marginRight: "auto",
+    color: "var(--primary-color)",
+    marginBottom: "10px",
+    fontSize: "19px",
+    fontWeight: "600",
   }}
 >
-  <p
+  {project.title}
+</h3>
+
+<p
+  style={{
+    color: "var(--text-color)",
+    fontSize: "14px",
+    lineHeight: "1.6",
+  }}
+>
+  {project.desc}
+</p>
+</div>
+
+</div>
+))}
+</div>
+
+{/* Industries Note */}
+<div
+  style={{
+    marginTop: "70px",
+    padding: "35px",
+    borderRadius: "18px",
+    background: "linear-gradient(135deg,#6C63FF12,#8B5CF612)",
+    border: "1px solid rgba(108,99,255,0.25)",
+    maxWidth: "800px",
+    marginLeft: "auto",
+    marginRight: "auto",
+    textAlign: "center",
+  }}
+>
+  {/* Heading */}
+  <h3
     style={{
-      fontSize: "17px",
-      color: "var(--text-color)",
-      lineHeight: "1.7",
-      fontWeight: "500",
+      color: "var(--primary-color)",
+      fontSize: "22px",
+      marginBottom: "20px",
+      fontWeight: "700",
     }}
   >
-    We also design websites for startups, consultants, law firms,
-    travel agencies, construction companies, beauty salons,
-    photographers, event planners and many other industries.
-    <br /><br />
-    <span style={{ color: "var(--primary-color)", fontWeight: "600" }}>
-      Whatever your business is — we can build a powerful website for it.
+    And Many More Industries 🚀
+  </h3>
+
+  {/* Quick list */}
+  <div
+    style={{
+      display: "flex",
+      flexWrap: "wrap",
+      justifyContent: "center",
+      gap: "12px",
+      marginBottom: "20px",
+    }}
+  >
+    {[
+      "Startups",
+      "Consultants",
+      "Law Firms",
+      "Travel Agencies",
+      "Construction",
+      "Beauty Salons",
+      "Photographers",
+      "Event Planners",
+    ].map((item, i) => (
+      <span
+        key={i}
+        style={{
+          padding: "8px 14px",
+          borderRadius: "20px",
+          fontSize: "14px",
+          background: "#ffffff",
+          border: "1px solid rgba(108,99,255,0.25)",
+          color: "var(--text-color)",
+          fontWeight: "500",
+        }}
+      >
+        {item}
+      </span>
+    ))}
+  </div>
+
+  {/* Closing line */}
+  <p
+    style={{
+      fontSize: "16px",
+      fontWeight: "600",
+      color: "var(--text-color)",
+    }}
+  >
+    Whatever your business is —{" "}
+    <span style={{ color: "var(--primary-color)" }}>
+      we can build a website for it.
     </span>
   </p>
 </div>
-  </div>
+
+</div>
 </section>
 
 {/* Section Divider */}
+
 <div
   style={{
     width: "100%",
     height: "3px",
-    margin: "0 auto 40px",
+    margin: "40px auto 50px",
     borderRadius: "10px",
-    background: "linear-gradient(90deg, transparent, #6C63FF, #8B5CF6, #06B6D4, transparent)",
+    background:
+      "linear-gradient(90deg, transparent, #6C63FF, #8B5CF6, #06B6D4, transparent)",
   }}
 ></div>
 
-{/* ================= TESTIMONIALS SECTION ================= */}
-<section
-  style={{
-    width: "100%",
-    padding: "20px 0",
-    background: "var(--section-bg)",
-    overflow: "hidden",
-  }}
->
+{/* ================= TESTIMONIALS ================= */}
 
-  {/* Header */}
-  <div style={{ textAlign: "center", marginBottom: "60px" }}>
-    <h2
-      style={{
-        fontSize: "2.5rem",
-        fontWeight: "700",
-        color: "var(--primary-color)",
-        marginBottom: "10px",
-      }}
-    >
-      What Our Clients Say
-    </h2>
-
-    <p
-      style={{
-        color: "var(--text-color)",
-        fontSize: "1.1rem",
-        maxWidth: "600px",
-        margin: "0 auto",
-      }}
-    >
-      Trusted by businesses across multiple industries to build powerful,
-      modern and scalable websites.
-    </p>
-  </div>
-
-  {/* Moving Cards */}
+<section style={{ width: "100%" }}>
   <div
     style={{
-      display: "flex",
-      gap: "30px",
-      width: "max-content",
-      animation: "scrollTestimonials 100s linear infinite",
-      padding: "20px",
+      width: "100%",
+      background: "#ffffff",
+      padding: "20px 40px",
+      overflow: "hidden",
     }}
   >
+    {/* Header */}
+    <div style={{ textAlign: "center", marginBottom: "60px" }}>
+      <h2 style={{ ...heading2Style, textAlign: "center" }}>
+        Client Reviews
+      </h2>
 
-    {[...testimonials, ...testimonials].map((item, index) => (
+  <p
+    style={{
+      maxWidth: "700px",
+      margin: "0 auto",
+      fontSize: "22px",
+      color: "var(--text-color)",
+      lineHeight: "0.2",
+      opacity: "0.9",
+    }}
+  >
+    Real feedback from businesses we helped build and launch online.
+  </p>
+</div>
+
+{/* Reviews */}
+<div
+  style={{
+    display: "flex",
+    gap: "30px",
+    width: "max-content",
+    animation: "scrollReviews 90s linear infinite",
+  }}
+>
+  {[
+    {
+      name: "Rahul Mehta",
+      role: "Real Estate Consultant",
+      image: "https://randomuser.me/api/portraits/men/32.jpg",
+      review:
+        "BeyondIT built our property website and the design looks very professional. Clients can now easily view listings and contact us.",
+    },
+    {
+      name: "Ananya Sharma",
+      role: "Cafe Owner",
+      image: "https://randomuser.me/api/portraits/women/44.jpg",
+      review:
+        "Our cafe website looks amazing. Customers now check our menu online and even find us through Google search.",
+    },
+    {
+      name: "David Patel",
+      role: "Gym Founder",
+      image: "https://randomuser.me/api/portraits/men/51.jpg",
+      review:
+        "Very smooth experience working with them. They understood our requirements and delivered the website faster than expected.",
+    },
+    {
+      name: "Priya Nair",
+      role: "Clinic Manager",
+      image: "https://randomuser.me/api/portraits/women/65.jpg",
+      review:
+        "The website is clean and easy for patients to use. Appointment enquiries have increased after launch.",
+    },
+    {
+      name: "Arjun Reddy",
+      role: "Startup Founder",
+      image: "https://randomuser.me/api/portraits/men/76.jpg",
+      review:
+        "Great team. They helped us design a modern website for our startup and guided us on SEO as well.",
+    },
+  ]
+    .concat([
+      {
+        name: "Rahul Mehta",
+        role: "Real Estate Consultant",
+        image: "https://randomuser.me/api/portraits/men/32.jpg",
+        review:
+          "BeyondIT built our property website and the design looks very professional. Clients can now easily view listings and contact us.",
+      },
+      {
+        name: "Ananya Sharma",
+        role: "Cafe Owner",
+        image: "https://randomuser.me/api/portraits/women/44.jpg",
+        review:
+          "Our cafe website looks amazing. Customers now check our menu online and even find us through Google search.",
+      },
+    ])
+    .map((item, index) => (
       <div
         key={index}
         style={{
-          width: "320px",
-          background: "var(--card-bg)",
-          padding: "30px",
+          width: "340px",
+          padding: "28px",
           borderRadius: "16px",
-          boxShadow: "0 10px 30px rgba(0,0,0,0.08)",
-          transition: "0.3s",
+          border: "1px solid rgba(108,99,255,0.25)",
+          background: "#fff",
+          boxShadow: "0 10px 25px rgba(0,0,0,0.06)",
           flexShrink: 0,
+          transition: "all 0.3s ease",
+        }}
+        onMouseEnter={(e) => {
+          e.currentTarget.style.transform = "translateY(-8px)";
+          e.currentTarget.style.boxShadow =
+            "0 18px 40px rgba(108,99,255,0.25)";
+        }}
+        onMouseLeave={(e) => {
+          e.currentTarget.style.transform = "translateY(0)";
+          e.currentTarget.style.boxShadow =
+            "0 10px 25px rgba(0,0,0,0.06)";
         }}
       >
+        {/* Stars */}
+        <div
+          style={{
+            color: "#FFC107",
+            fontSize: "18px",
+            marginBottom: "10px",
+          }}
+        >
+          ★★★★★
+        </div>
+
+        {/* Review */}
+        <p
+          style={{
+            fontSize: "15px",
+            color: "var(--text-color)",
+            lineHeight: "1.6",
+            marginBottom: "20px",
+          }}
+        >
+          "{item.review}"
+        </p>
 
         {/* Profile */}
         <div
           style={{
             display: "flex",
             alignItems: "center",
-            gap: "15px",
-            marginBottom: "20px",
+            gap: "12px",
           }}
         >
           <img
             src={item.image}
-            alt={item.author}
+            alt={item.name}
             style={{
-              width: "50px",
-              height: "50px",
+              width: "45px",
+              height: "45px",
               borderRadius: "50%",
               objectFit: "cover",
+              border: "2px solid var(--primary-color)",
             }}
           />
 
           <div>
-            <h4
+            <div
               style={{
-                margin: 0,
-                fontSize: "1rem",
+                fontWeight: "600",
                 color: "var(--primary-color)",
+                fontSize: "15px",
               }}
             >
-              {item.author}
-            </h4>
+              {item.name}
+            </div>
 
-            <span
+            <div
               style={{
-                fontSize: "0.85rem",
-                color: "gray",
+                fontSize: "13px",
+                color: "#777",
               }}
             >
-              Client
-            </span>
+              {item.role}
+            </div>
           </div>
         </div>
-
-        {/* Quote */}
-        <p
-          style={{
-            fontSize: "0.95rem",
-            color: "var(--text-color)",
-            lineHeight: "1.6",
-            fontStyle: "italic",
-          }}
-        >
-          “{item.quote}”
-        </p>
       </div>
     ))}
-  </div>
+</div>
 
-  {/* Animation */}
-  <style>
-    {`
-      @keyframes scrollTestimonials {
-        0% { transform: translateX(0); }
-        100% { transform: translateX(-50%); }
-      }
-    `}
-  </style>
+{/* Animation */}
+<style>
+  {`
+  @keyframes scrollReviews {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+  }
+  `}
+</style>
+```
+
+  </div>
 </section>
 
  {/* Call to Action */}
-        <section
-          style={{
-            position: "relative",
-            textAlign: "center",
-            margin: "3rem auto 6rem",
-            padding: "3rem 2.5rem",
-            maxWidth: "640px",
-            borderRadius: "50px",
-            background: "#1f1f2e",
-            color: "#d3caff",
-            fontWeight: "600",
-            fontSize: "1.3rem",
-            boxShadow:
-              "inset 0 0 20px 2px #6c63ff, 0 12px 24px rgba(108, 99, 255, 0.5)",
-          }}
-        >
-          <div style={pulseGlowStyle} />
-          <h3>
-            We also build landing pages, UI/UX designs, logos, and provide AI
-            voiceover videos to amplify your brand voice.
-          </h3>
-          <Link
-            to="/contact"
-            style={{
-              display: "inline-block",
-              marginTop: "2.5rem",
-              fontWeight: "600",
-              padding: "0.75rem 2.5rem",
-              borderRadius: "30px",
-              backgroundColor: "var(--primary-color)",
-              color: "#fff",
-              fontSize: "1.3rem",
-              boxShadow: "0 8px 15px rgba(108, 99, 255, 0.6)",
-              transition: "background-color 0.3s ease",
-              textDecoration: "none",
-            }}
-            onMouseEnter={(e) => {
-              e.currentTarget.style.backgroundColor = "#8a7eff";
-            }}
-            onMouseLeave={(e) => {
-              e.currentTarget.style.backgroundColor = "var(--primary-color)";
-            }}
-          >
-            Contact Us
-          </Link>
-        </section>
+       <section
+  style={{
+    position: "relative",
+    textAlign: "center",
+    padding: "5rem 2rem",
+    background:
+      "linear-gradient(180deg, #0f0f1a 0%, #151530 40%, #0f0f1a 100%)",
+  }}
+>
+  <div
+    style={{
+      maxWidth: "700px",
+      margin: "0 auto",
+      padding: "3rem 2.5rem",
+      borderRadius: "40px",
+      background: "rgba(31,31,46,0.9)",
+      backdropFilter: "blur(10px)",
+      border: "1px solid rgba(108,99,255,0.3)",
+      boxShadow:
+        "0 0 40px rgba(108,99,255,0.4), inset 0 0 20px rgba(108,99,255,0.2)",
+      color: "#d3caff",
+    }}
+  >
+    <h2
+      style={{
+        fontSize: "2rem",
+        marginBottom: "1.5rem",
+        color: "#ffffff",
+      }}
+    >
+      Let’s Build Something Amazing
+    </h2>
+
+    <p
+      style={{
+        fontSize: "1.2rem",
+        lineHeight: "1.7",
+        opacity: "0.9",
+      }}
+    >
+      We build landing pages, UI/UX designs, logos, and AI voiceover videos
+      to amplify your brand and help your business grow online.
+    </p>
+
+    <Link
+      to="/contact"
+      style={{
+        display: "inline-block",
+        marginTop: "2rem",
+        padding: "0.9rem 2.7rem",
+        borderRadius: "30px",
+        background:
+          "linear-gradient(135deg,#6c63ff,#8a7eff)",
+        color: "#fff",
+        fontSize: "1.2rem",
+        fontWeight: "600",
+        textDecoration: "none",
+        boxShadow: "0 10px 25px rgba(108,99,255,0.6)",
+        transition: "all 0.3s ease",
+      }}
+      onMouseEnter={(e) => {
+        e.currentTarget.style.transform = "translateY(-3px)";
+        e.currentTarget.style.boxShadow =
+          "0 15px 35px rgba(108,99,255,0.8)";
+      }}
+      onMouseLeave={(e) => {
+        e.currentTarget.style.transform = "translateY(0px)";
+        e.currentTarget.style.boxShadow =
+          "0 10px 25px rgba(108,99,255,0.6)";
+      }}
+    >
+      Start Your Project
+    </Link>
+  </div>
+</section>
         {/* WhatsApp floating button */}
         <div
           onClick={handleWhatsAppClick}

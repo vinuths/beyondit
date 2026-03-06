@@ -91,19 +91,30 @@ const Footer = () => {
             platforms to help businesses grow online.
           </p>
 
-          <div style={styles.socialRow}>
-            <a href="https://github.com/vinuths" target="_blank" rel="noreferrer">
-              <FaGithub />
-            </a>
+         <div style={styles.socialRow}>
+  <a
+    href="https://github.com/vinuths"
+    target="_blank"
+    rel="noreferrer"
+    style={{ color: "#fff" }}
+  >
+    <FaGithub />
+  </a>
 
-            <a href="#">
-              <FaLinkedin />
-            </a>
+  <a
+    href="#"
+    style={{ color: "#fff" }}
+  >
+    <FaLinkedin />
+  </a>
 
-            <a href="#">
-              <FaInstagram />
-            </a>
-          </div>
+  <a
+    href="#"
+    style={{ color: "#fff" }}
+  >
+    <FaInstagram />
+  </a>
+</div>
         </div>
 
         {/* Quick Links */}

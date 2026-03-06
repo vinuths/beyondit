@@ -4,203 +4,223 @@ import { Link } from "react-router-dom";
 import { FaRobot, FaPlayCircle, FaBullhorn, FaClock } from "react-icons/fa";
 
 const AiGeneration = () => {
+
+  const features = [
+    {
+      icon: <FaRobot size={38} />,
+      title: "AI Avatars",
+      desc: "Realistic AI avatars that speak naturally and present your content professionally."
+    },
+    {
+      icon: <FaPlayCircle size={38} />,
+      title: "HD Video Output",
+      desc: "High-quality videos optimized for websites, ads, and social media."
+    },
+    {
+      icon: <FaBullhorn size={38} />,
+      title: "Voice Overs",
+      desc: "Professional voice overs in multiple tones and languages."
+    },
+    {
+      icon: <FaClock size={38} />,
+      title: "Fast Delivery",
+      desc: "Quick turnaround without compromising production quality."
+    }
+  ];
+
   return (
     <>
       <Helmet>
         <title>BeyondIT - AI Generation & Voice Over Videos</title>
         <meta
           name="description"
-          content="Create captivating AI-generated videos with professional voice overs for marketing, training, and more."
+          content="Create AI generated marketing videos with professional voice overs for your business."
         />
       </Helmet>
 
-      <section
-        style={{
-          maxWidth: 900,
-          margin: "3rem auto",
-          padding: "0 1rem",
-          fontFamily: "'Poppins', sans-serif",
-          color: "#222",
-          lineHeight: 1.6,
-        }}
-      >
-        {/* Back Link */}
-        <Link
-          to="/services"
-          style={{
-            display: "inline-block",
-            marginBottom: "1.5rem",
-            color: "#6c63ff",
-            textDecoration: "none",
-            fontWeight: 600,
-            fontSize: "1rem",
-          }}
-          aria-label="Back to services"
-        >
-          ← Back to Services
-        </Link>
+      <section style={{ fontFamily: "'Poppins', sans-serif" }}>
 
-        {/* Header */}
-        <h1
-          style={{
-            fontSize: "2.8rem",
-            fontWeight: "800",
-            marginBottom: "1rem",
-            color: "#6c63ff",
-            letterSpacing: "1.2px",
-            textShadow: "0 2px 6px rgba(108, 99, 255, 0.4)",
-          }}
-        >
-          AI Generation & Voice Over Videos
-        </h1>
+       {/* HERO */}
+<div
+  style={{
+    width: "100%",
+    padding: "20px 8%",
+    background: "linear-gradient(135deg,#6366f1,#7c3aed)",
+    color: "white",
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+    justifyContent: "center",
+    textAlign: "center"
+  }}
+>
+  <h1
+    style={{
+      fontSize: "3.2rem",
+      fontWeight: "800",
+      marginBottom: "20px",
+      textAlign: "center"
+    }}
+  >
+    AI Generated Videos & Voice Overs
+  </h1>
 
-        {/* Intro */}
-        <p
-          style={{
-            fontSize: "1.25rem",
-            marginBottom: "2rem",
-            maxWidth: "720px",
-            color: "#444",
-          }}
-        >
-          Harness the power of AI to create captivating videos featuring
-          lifelike avatars paired with professional voice overs. Ideal for
-          marketing campaigns, explainer videos, training materials, and more.
-          Elevate your brand with innovation and storytelling that engages your
-          audience.
-        </p>
+  <p
+    style={{
+      fontSize: "1.25rem",
+      maxWidth: "750px",
+      marginBottom: "30px",
+      opacity: 0.9
+    }}
+  >
+    Create powerful AI-generated videos using lifelike avatars and
+    professional voice overs for marketing, training, product demos,
+    and business promotions.
+  </p>
 
-        {/* Features */}
+  <Link
+    to="/contact"
+    style={{
+      background: "white",
+      color: "#6366f1",
+      padding: "14px 38px",
+      borderRadius: "40px",
+      fontWeight: "700",
+      textDecoration: "none",
+      fontSize: "1.1rem",
+      boxShadow: "0 10px 30px rgba(0,0,0,0.2)"
+    }}
+  >
+    Start Your AI Video
+  </Link>
+</div>
+        {/* FEATURES */}
         <div
           style={{
-            display: "grid",
-            gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))",
-            gap: "2rem",
-            marginBottom: "3rem",
+            padding: "90px 8%",
+            background: "#f8fafc"
           }}
-        >
-          {[{
-            icon: <FaRobot size={36} color="#6c63ff" aria-hidden="true" />,
-            title: "AI-Powered Avatars",
-            desc: "Realistic and customizable avatars that speak with natural expressions."
-          },{
-            icon: <FaPlayCircle size={36} color="#6c63ff" aria-hidden="true" />,
-            title: "High-Quality Video Output",
-            desc: "Crisp HD videos optimized for all platforms and devices."
-          },{
-            icon: <FaBullhorn size={36} color="#6c63ff" aria-hidden="true" />,
-            title: "Professional Voice Overs",
-            desc: "Clear, engaging voice overs tailored to your brand's tone and style."
-          },{
-            icon: <FaClock size={36} color="#6c63ff" aria-hidden="true" />,
-            title: "Fast Turnaround",
-            desc: "Get your videos delivered quickly without compromising quality."
-          }].map(({icon, title, desc}, idx) => (
-            <div
-              key={idx}
-              style={{
-                backgroundColor: "#f5f4ff",
-                borderRadius: "16px",
-                padding: "1.8rem 1.5rem",
-                boxShadow: "0 4px 14px rgba(108, 99, 255, 0.12)",
-                textAlign: "center",
-                transition: "transform 0.3s ease",
-                cursor: "default",
-              }}
-              onMouseEnter={e => e.currentTarget.style.transform = "translateY(-6px)"}
-              onMouseLeave={e => e.currentTarget.style.transform = "translateY(0)"}
-            >
-              <div style={{ marginBottom: "1rem" }}>{icon}</div>
-              <h3
-                style={{
-                  fontSize: "1.25rem",
-                  fontWeight: "700",
-                  color: "#4b47a0",
-                  marginBottom: "0.5rem",
-                }}
-              >
-                {title}
-              </h3>
-              <p style={{ fontSize: "1rem", color: "#5a5a8a" }}>{desc}</p>
-            </div>
-          ))}
-        </div>
-
-        {/* Benefits Section */}
-        <section
-          style={{
-            backgroundColor: "#6c63ff",
-            color: "#fff",
-            padding: "2.5rem 1.5rem",
-            borderRadius: "24px",
-            maxWidth: "720px",
-            margin: "0 auto 4rem",
-            textAlign: "center",
-            boxShadow: "0 10px 25px rgba(108, 99, 255, 0.4)",
-          }}
-          aria-label="Benefits of AI video generation"
         >
           <h2
             style={{
-              fontSize: "2rem",
+              textAlign: "center",
+              fontSize: "2.4rem",
               fontWeight: "700",
-              marginBottom: "1rem",
-              textShadow: "0 2px 10px rgba(0,0,0,0.2)",
+              marginBottom: "60px",
+              color: "#333"
             }}
           >
-            Why Choose Our AI Video Services?
+            Powerful AI Video Features
           </h2>
-          <ul
+
+          <div
             style={{
-              listStyle: "none",
-              paddingLeft: 0,
-              fontSize: "1.1rem",
-              maxWidth: 550,
-              margin: "0 auto",
-              lineHeight: 1.6,
-              fontWeight: 500,
+              display: "grid",
+              gridTemplateColumns: "repeat(auto-fit,minmax(260px,1fr))",
+              gap: "30px"
             }}
           >
-            <li>🚀 Boost engagement with cutting-edge AI technology.</li>
-            <li>🎯 Deliver consistent brand messaging effortlessly.</li>
-            <li>💡 Save time and resources compared to traditional video production.</li>
-            <li>🌍 Reach global audiences with multilingual voice overs.</li>
-          </ul>
-        </section>
+            {features.map((item, i) => (
+              <div
+                key={i}
+                style={{
+                  background: "white",
+                  padding: "40px 30px",
+                  borderRadius: "18px",
+                  textAlign: "center",
+                  boxShadow: "0 10px 25px rgba(0,0,0,0.08)",
+                  transition: "all 0.3s ease",
+                  cursor: "default"
+                }}
+                onMouseEnter={e => {
+                  e.currentTarget.style.transform = "translateY(-8px)";
+                  e.currentTarget.style.boxShadow =
+                    "0 18px 40px rgba(0,0,0,0.12)";
+                }}
+                onMouseLeave={e => {
+                  e.currentTarget.style.transform = "translateY(0)";
+                  e.currentTarget.style.boxShadow =
+                    "0 10px 25px rgba(0,0,0,0.08)";
+                }}
+              >
+                <div
+                  style={{
+                    color: "#6366f1",
+                    marginBottom: "15px"
+                  }}
+                >
+                  {item.icon}
+                </div>
 
-        {/* Call to Action */}
-        <div style={{ textAlign: "center" }}>
+                <h3
+                  style={{
+                    fontSize: "1.3rem",
+                    fontWeight: "700",
+                    marginBottom: "10px"
+                  }}
+                >
+                  {item.title}
+                </h3>
+
+                <p style={{ color: "#666", fontSize: "0.95rem" }}>
+                  {item.desc}
+                </p>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* BENEFITS */}
+        <div
+          style={{
+            padding: "90px 8%",
+            background: "linear-gradient(135deg,#6366f1,#8b5cf6)",
+            color: "white",
+            textAlign: "center"
+          }}
+        >
+          <h2
+            style={{
+              fontSize: "2.5rem",
+              fontWeight: "700",
+              marginBottom: "25px"
+            }}
+          >
+            Why Businesses Use AI Videos
+          </h2>
+
+          <div
+            style={{
+              maxWidth: "700px",
+              margin: "0 auto",
+              fontSize: "1.1rem",
+              lineHeight: 1.8
+            }}
+          >
+            <p>🚀 Increase engagement and conversions.</p>
+            <p>🎯 Deliver clear product explanations.</p>
+            <p>💰 Reduce video production costs.</p>
+            <p>🌍 Reach global audiences with multilingual voice overs.</p>
+          </div>
+
           <Link
             to="/contact"
             style={{
-              backgroundColor: "#4b47a0",
-              color: "#fff",
-              padding: "1.1rem 3rem",
-              borderRadius: "36px",
-              fontWeight: "700",
-              fontSize: "1.2rem",
-              boxShadow: "0 6px 16px rgba(75, 71, 160, 0.75)",
-              textDecoration: "none",
-              transition: "background-color 0.3s ease",
+              marginTop: "35px",
               display: "inline-block",
-              userSelect: "none",
+              background: "white",
+              color: "#6366f1",
+              padding: "14px 38px",
+              borderRadius: "40px",
+              fontWeight: "700",
+              textDecoration: "none",
+              fontSize: "1.1rem"
             }}
-            onMouseEnter={e => (e.currentTarget.style.backgroundColor = "#3a3780")}
-            onMouseLeave={e => (e.currentTarget.style.backgroundColor = "#4b47a0")}
           >
-            Request a Free Consultation
+            Get Your AI Video
           </Link>
-          <p
-            style={{
-              marginTop: "1.25rem",
-              fontSize: "0.9rem",
-              color: "#666",
-              fontWeight: 500,
-            }}
-          >
-            Or reach out via WhatsApp for a quick chat!
-          </p>
         </div>
+
       </section>
     </>
   );
